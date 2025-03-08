@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route Map: {{ schedule.schedule_no }} - Trip {{ schedule.trip_no }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary: #0d6efd;
+            --primary-dark: #0a58ca;
+            --light-bg: #f8f9fa;
+            --text-dark: #343a40;
+            --text-muted: #6c757d;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.07);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background-color: var(--light-bg);
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        
+        .map-container {
+            height: 650px;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .trip-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .metrics-bar {
+            display: flex;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .metric {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            padding: 5px 10px;
+            border-radius: 6px;
+            margin-right: 8px;
+            margin-bottom: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .metric-icon {
+            font-size: 1rem;
+            color: var(--primary);
+            margin-right: 6px;
+        }
+        
+        .metric-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-right: 4px;
+        }
+        
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        h1 {
+            font-size: 1.3rem;
+            margin: 0;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.8rem;
+            margin-bottom: 0;
+        }
+        
+        .back-btn {
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .header-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @media (max-width: 576px) {
+            .metrics-bar {
+                flex-direction: column;
+            }
+            
+            .metric {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="trip-header">
+            <div class="header-info">
+                <h1>Schedule {{ schedule.schedule_no }} - Trip {{ schedule.trip_no }}</h1>
+                <p class="subtitle">{{ schedule.source }} to {{ schedule.destination }} | {{ schedule.route_no }}</p>
+            </div>
+            <a href="{% url 'trip_list_view' schedule.schedule_no %}" class="btn btn-sm btn-outline-light back-btn">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        </div>
+        
+        {% if trip %}
+        <div class="metrics-bar">
+            {% if trip.revenue %}
+                <div class="metric">
+                    <i class="bi bi-currency-rupee metric-icon"></i>
+                    <span class="metric-value">₹{{ trip.revenue|floatformat:2 }}</span>
+                    <span class="metric-label">Revenue</span>
+                </div>
+            {% endif %}
+            
+            {% if trip.distance_km %}
+                <div class="metric">
+                    <i class="bi bi-geo-alt metric-icon"></i>
+                    <span class="metric-value">{{ trip.distance_km|floatformat:1 }} km</span>
+                    <span class="metric-label">Distance</span>
+                </div>
+            {% endif %}
+            
+            {% if trip.epkm %}
+                <div class="metric">
+                    <i class="bi bi-graph-up-arrow metric-icon"></i>
+                    <span class="metric-value">₹{{ trip.epkm|floatformat:2 }}</span>
+                    <span class="metric-label">EPKM</span>
+                </div>
+            {% endif %}
+            
+            <div class="metric">
+                <i class="bi bi-calendar-event metric-icon"></i>
+                <span class="metric-value">{{ trip.date }}</span>
+                <span class="metric-label">Date</span>
+            </div>
+            
+            <div class="metric">
+                <i class="bi bi-truck metric-icon"></i>
+                <span class="metric-value">{{ schedule.service_type }}</span>
+                <span class="metric-label">Service</span>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="map-container">
+            {{ map_html|safe }}
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
