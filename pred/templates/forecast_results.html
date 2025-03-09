@@ -5,72 +5,187 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demand Forecast Results</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #fbe5e5;
-            color: #333;
+        :root {
+            --primary: #1976d2;
+            --primary-dark: #0d47a1;
+            --primary-light: #bbdefb;
+            --accent: #03a9f4;
+            --text-on-dark: #ffffff;
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --background: #f5f7fa;
+            --card-bg: #ffffff;
+            --border-radius: 8px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
-        header {
-            background-color: #d32f2f;
-            color: white;
-            padding: 20px;
-            text-align: center;
+        
+        body {
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
         }
-
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--text-on-dark);
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
         h1 {
             margin: 0;
+            font-size: 2.2em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
-
+        
         .container {
-            width: 80%;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0;
+            background-color: transparent;
         }
-
-        h2, h3 {
-            color: #d32f2f;
+        
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: var(--transition);
         }
-
-        ul {
-            list-style-type: none;
-            padding-left: 0;
+        
+        .card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
         }
-
-        li {
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #f8d7da;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        
+        h2 {
+            color: var(--primary);
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            font-weight: 600;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
         }
-
+        
+        h3 {
+            color: var(--primary);
+            font-size: 1.4em;
+            margin: 25px 0 15px;
+            font-weight: 500;
+        }
+        
         .forecast-plot {
             text-align: center;
+            margin: 30px 0;
+        }
+        
+        .forecast-plot img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .forecast-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--primary-light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+        }
+        
+        .forecast-summary h2 {
+            color: var(--primary-dark);
+            margin: 0;
+            border: none;
+            padding: 0;
+        }
+        
+        .demand-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+        
+        .hourly-demand {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
             margin-top: 20px;
         }
-
+        
+        .hourly-item {
+            background: linear-gradient(to right, var(--primary-light), #e3f2fd);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .hourly-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .hour-label {
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .demand-count {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .time-format {
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+        
+        .button-container {
+            text-align: center;
+            margin: 30px 0 10px;
+        }
+        
         .button {
             display: inline-block;
-            background-color: #d32f2f;
+            background-color: var(--primary);
             color: white;
-            padding: 10px 20px;
+            padding: 14px 28px;
             text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1em;
+            box-shadow: 0 4px 10px rgba(25, 118, 210, 0.3);
+            transition: var(--transition);
         }
-
+        
         .button:hover {
-            background-color: #c62828;
-        }
-
-        .time-format {
-            font-style: italic;
-            color: #777;
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(25, 118, 210, 0.4);
         }
     </style>
 </head>
@@ -78,25 +193,38 @@
     <header>
         <h1>Demand Forecast Results</h1>
     </header>
-
+    
     <div class="container">
-        <div class="forecast-plot">
-            <h3>Demand Forecast Plot:</h3>
-            <img src="data:image/png;base64,{{ image_base64 }}" alt="Demand Forecast Plot" />
+        <div class="card">
+            <div class="forecast-plot">
+                <h3>Passenger Demand Visualization</h3>
+                <img src="data:image/png;base64,{{ image_base64 }}" alt="Demand Forecast Plot" />
+            </div>
         </div>
-
-        <h2>Total Predicted Demand: {{ total_demand }}</h2>
-
-        <h3>Hourly Predicted Demand:</h3>
-        <ul>
-            {% for demand in hourly_demand %}
-                <li>Hour {{ forloop.counter }}: {{ demand }} 
-                    <span class="time-format">({{ forloop.counter0|add:6|time:"h:i A" }})</span>
-                </li>
-            {% endfor %}
-        </ul>
-
-        <a href="{% url 'demand_forecast' %}" class="button">Go Back</a>
+        
+        <div class="card">
+            <div class="forecast-summary">
+                <div>
+                    <h2>Total Predicted Demand</h2>
+                </div>
+                <div class="demand-value">{{ total_demand }}</div>
+            </div>
+            
+            <h3>Hourly Predicted Demand</h3>
+            <div class="hourly-demand">
+                {% for demand in hourly_demand %}
+                    <div class="hourly-item">
+                        <div class="hour-label">Hour {{ forloop.counter }}</div>
+                        <div class="demand-count">{{ demand }}</div>
+                        <div class="time-format">({{ forloop.counter0|add:6|time:"h:i A" }})</div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="button-container">
+                <a href="{% url 'demand_forecast' %}" class="button">Generate New Forecast</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>

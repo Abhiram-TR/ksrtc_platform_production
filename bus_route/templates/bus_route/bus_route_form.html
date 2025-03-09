@@ -140,13 +140,14 @@
         <form method="post">
             {% csrf_token %}
             
-            <label for="stop_names">Enter Bus Stops:</label>
+            <label for="stop_names">Enter bus stop names separated by commas:</label>
             <p class="helper-text">
             
             </p>
             
-            <textarea name="stop_names" id="stop_names" required placeholder="Enter bus stop names separated by commas..."></textarea>
-            
+            <textarea name="stop_names" id="stop_names" required>EASTFORT SOUTH STAND 2, THAMPANOOR BUS STAND, KILLIPALAM, PRS, KARAMANA JN, NEERAMANKARA, KAIMANAM JUNCTION, CENTRAL WORKS, PAPPANAMCODE, KARAKKAMANDAPAM JUNCTION, OLD KARAKKAMANDAPAM, VELLAYANI, NEMOM, NEMOM SCHOOL, PRAVACHAMBALAM, ARIKKADAMUKKU, NETHAJI NAGAR, MUKKUNADA, NARUVAMOODU, NADUKKADU JN, OLIPPUNADA, VALIYARATHALA JN, GOVINDAMANGALAM TEMPLE, GOVINDAMANGALAM JN, KUMBALATHUNADA, ISHALIKODU, OORUTTAMBALAM JN, MOOLAKONAM JN, MARANALLOOR, ARUMALLOOR, KANDALA, KOCHUPALLINADA KANDALA, THOONGAMPARA, ANJUTHENGINMOODU, KATTAKADA KSRTC DEPOT PLATFORM NO1
+                </textarea>
+                            
             <button type="submit" class="btn-submit">
                 <i class="bi bi-map"></i> Show Route
             </button>

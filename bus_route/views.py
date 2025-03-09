@@ -519,50 +519,52 @@ def schedule_list_view(request):
     }
     
     return render(request, 'bus_route/schedule_list.html', context)
-
 def trip_list_view(request, schedule_no):
     """View to display trips for a specific schedule with date filtering"""
     # Ensure schedule_no is uppercase
     schedule_no = schedule_no.upper()
 
-    # Retrieve one schedule record for additional details (if needed)
-    schedule = Schedule.objects.filter(schedule_no=schedule_no).first()
-
     # Get date from query parameters, default to today if not provided
     selected_date = request.GET.get('date', '2024-08-15')
 
     # Get all trips for this schedule_no and selected date
-    trips = Trip.objects.filter(schedule_no=schedule_no, date=selected_date).order_by('-date', 'trip_no')
-
-    # Group trips by trip_no and get the most recent trip for each trip_no
-    trip_groups = {}
+    trips = Trip.objects.filter(schedule_no=schedule_no, date=selected_date)
+    
+    # Get all schedules associated with these trips
+    trip_schedules = []
     for trip in trips:
-        if trip.trip_no not in trip_groups:
-            trip_groups[trip.trip_no] = []
         try:
-            s = Schedule.objects.get(schedule_no=schedule_no, trip_no=trip.trip_no)
+            schedule = Schedule.objects.get(schedule_no=schedule_no, trip_no=trip.trip_no)
+            # Create a combined data structure with schedule and trip information
+            combined_data = {
+                'route_no': schedule.route_no,
+                'trip_no': trip.trip_no,
+                'date': trip.date,
+                'source': schedule.source,
+                'via': schedule.via,
+                'destination': schedule.destination,
+                'start_time': schedule.start_time,
+                'end_time': schedule.end_time,
+                'trip_km': schedule.trip_km,
+                'revenue': trip.revenue,
+                'schedule_no': schedule_no
+            }
+            trip_schedules.append(combined_data)
         except Schedule.DoesNotExist:
-            route_no = -1
-        trip_groups[trip.trip_no].append(trip)
-        trip_groups[trip.trip_no].append(s)
-
-
-        # print(trip_groups)
-
-    latest_trips = []
-    for trip_no, trip_list in trip_groups.items():
-        latest_trips.append((trip_list[0], trip_list[1]))
-    latest_trips.sort(key=lambda x: x[0].trip_no)
+            continue
+    
+    # Sort by trip_no
+    trip_schedules.sort(key=lambda x: x['trip_no'])
+    
     # Get a list of unique dates that have trips for this schedule
     all_dates = Trip.objects.filter(schedule_no=schedule_no).values_list('date', flat=True).distinct().order_by('-date')
 
-    routes = Schedule.objects.filter(schedule_no=schedule_no).values_list('route_no',flat=True).distinct().order_by('route_no')
+    # Get unique route numbers for this schedule
+    routes = Schedule.objects.filter(schedule_no=schedule_no).values_list('route_no', flat=True).distinct().order_by('route_no')
 
-    # print(latest_trips)
     context = {
-        'schedule': schedule,
         'schedule_no': schedule_no,
-        'trips': latest_trips,
+        'trips': trip_schedules,
         'selected_date': selected_date,
         'all_dates': all_dates,
         'routes': routes

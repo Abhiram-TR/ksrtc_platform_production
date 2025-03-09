@@ -1,4 +1,3 @@
-<!-- templates/bus_route/trip_list.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,30 +9,35 @@
     <!-- Add Flatpickr for better date picking -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
-        /* Keep all the existing CSS styles */
         :root {
-            --primary-color: #0d6efd;
+            --primary-color: #3563E9;
+            --primary-light: rgba(53, 99, 233, 0.1);
+            --primary-dark: #1e45be;
             --secondary-color: #0a58ca;
             --accent-color: #ffc107;
             --light-bg: #f8f9fa;
-            --text-color: #333;
-            --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            --hover-shadow: 0 8px 16px rgba(0,0,0,0.12);
+            --text-color: #1A202C;
+            --text-secondary: #4A5568;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            --hover-shadow: 0 8px 24px rgba(0,0,0,0.09);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
         }
         
         body {
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--light-bg);
-            padding-top: 20px;
-            padding-bottom: 40px;
+            font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #F7FAFC;
+            padding-top: 30px;
+            padding-bottom: 60px;
+            color: var(--text-color);
         }
         
         .header-container {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 25px;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
             position: relative;
             overflow: hidden;
             box-shadow: var(--card-shadow);
@@ -51,26 +55,28 @@
         }
         
         h1 {
-            font-weight: 700;
+            font-weight: 800;
             position: relative;
             margin-bottom: 10px;
-            font-size: 2rem;
+            font-size: 2.2rem;
+            letter-spacing: -0.5px;
         }
         
         .schedule-details {
             position: relative;
-            font-size: 1rem;
-            opacity: 0.9;
+            font-size: 1.05rem;
+            opacity: 0.95;
             margin-bottom: 0;
+            line-height: 1.6;
         }
         
         .trip-card {
             background-color: white;
-            border-radius: 12px;
+            border-radius: var(--border-radius);
             overflow: hidden;
             margin-bottom: 25px;
             box-shadow: var(--card-shadow);
-            transition: all 0.3s ease;
+            transition: var(--transition);
             border: none;
             height: 100%;
         }
@@ -81,60 +87,68 @@
         }
         
         .trip-header {
-            padding: 18px 20px;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            background-color: #f8f9fa;
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            background-color: white;
             position: relative;
         }
         
         .trip-body {
-            padding: 20px;
+            padding: 24px;
+            background-color: #FAFBFF;
         }
         
         .trip-footer {
-            padding: 15px 20px;
+            padding: 18px 24px;
             background-color: white;
-            border-top: 1px solid rgba(0,0,0,0.05);
+            border-top: 1px solid rgba(0,0,0,0.06);
         }
         
         .metrics {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
+            gap: 12px;
         }
         
         .metric {
             text-align: center;
-            background-color: rgba(13, 110, 253, 0.05);
-            padding: 12px;
-            border-radius: 8px;
+            background-color: white;
+            padding: 14px;
+            border-radius: 10px;
             flex: 1;
-            margin: 5px;
-            min-width: 80px;
+            min-width: 90px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.04);
         }
         
         .metric-value {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: var(--primary-color);
             margin-bottom: 5px;
         }
         
         .metric-label {
-            font-size: 0.8rem;
-            color: #6c757d;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
             font-weight: 500;
         }
         
         .back-btn {
             color: white;
             text-decoration: none;
-            display: inline-block;
-            padding: 8px 15px;
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 18px;
             border: 1px solid rgba(255,255,255,0.5);
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.2s ease;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .back-btn i {
+            margin-right: 8px;
         }
         
         .back-btn:hover {
@@ -145,9 +159,9 @@
         
         .filter-section {
             background-color: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 25px;
+            padding: 24px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
             box-shadow: var(--card-shadow);
         }
         
@@ -156,6 +170,13 @@
             font-weight: 600;
             margin-bottom: 12px;
             color: var(--text-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .filter-title i {
+            margin-right: 8px;
+            color: var(--primary-color);
         }
         
         .route-filters {
@@ -172,7 +193,7 @@
             border: 1px solid #dee2e6;
             background-color: white;
             color: var(--text-color);
-            transition: all 0.2s ease;
+            transition: var(--transition);
         }
         
         .route-filter-btn:hover {
@@ -200,90 +221,128 @@
         
         #tripSearch {
             padding-left: 40px;
-            border-radius: 8px;
-            height: 42px;
+            border-radius: 10px;
+            height: 46px;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            transition: var(--transition);
+        }
+        
+        #tripSearch:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.15);
         }
         
         .section-title {
             font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             color: var(--text-color);
             display: flex;
             align-items: center;
         }
         
         .section-title i {
-            margin-right: 10px;
+            margin-right: 12px;
             color: var(--primary-color);
+            font-size: 1.6rem;
         }
         
         .trip-count {
             font-size: 0.9rem;
-            color: #6c757d;
-            background-color: rgba(13, 110, 253, 0.1);
-            padding: 4px 12px;
+            color: var(--primary-color);
+            background-color: var(--primary-light);
+            padding: 5px 14px;
             border-radius: 20px;
             margin-left: 15px;
+            font-weight: 600;
         }
         
         .route-badge {
             background-color: var(--primary-color);
             color: white;
-            padding: 4px 10px;
+            padding: 5px 14px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-size: 0.9rem;
+            font-weight: 700;
             letter-spacing: 0.5px;
             position: absolute;
             right: 20px;
             top: 20px;
+            box-shadow: 0 2px 5px rgba(53, 99, 233, 0.2);
         }
         
         .trip-number {
-            font-size: 1.3rem;
-            font-weight: 700;
+            font-size: 1.5rem;
+            font-weight: 800;
             color: var(--text-color);
             margin: 0;
             padding-right: 80px;
+            letter-spacing: -0.5px;
         }
         
         .date-info {
-            color: #6c757d;
-            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
             margin-top: 5px;
             display: flex;
             align-items: center;
         }
         
         .date-info i {
-            margin-right: 5px;
+            margin-right: 6px;
+            color: var(--primary-color);
         }
         
         .view-btn {
-            padding: 10px;
-            border-radius: 8px;
+            padding: 12px 16px;
+            border-radius: 10px;
             font-weight: 600;
-            transition: all 0.2s ease;
+            transition: var(--transition);
             background-color: var(--primary-color);
             border-color: var(--primary-color);
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         
         .view-btn:hover {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
             transform: translateY(-2px);
         }
         
         .empty-state {
             text-align: center;
-            padding: 50px 20px;
+            padding: 60px 30px;
             background-color: white;
-            border-radius: 12px;
+            border-radius: var(--border-radius);
             box-shadow: var(--card-shadow);
         }
         
-        /* New styles for date picker */
+        .empty-state i {
+            font-size: 4rem; 
+            color: #CBD5E0; 
+            margin-bottom: 24px;
+            display: block;
+        }
+        
+        .empty-state h3 {
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 12px;
+        }
+        
+        .empty-state p {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto 24px;
+        }
+        
+        /* Date picker styles */
         .date-picker-wrapper {
             position: relative;
         }
@@ -298,53 +357,83 @@
         
         #datePicker {
             padding-left: 40px;
-            border-radius: 8px;
-            height: 42px;
+            border-radius: 10px;
+            height: 46px;
             cursor: pointer;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        #datePicker:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.15);
         }
         
         .date-quick-filter {
-            margin-top: 10px;
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
         }
         
-        /* New styles for route dropdown */
+        .quick-date {
+            border-radius: 8px;
+            font-weight: 500;
+            border-color: #E2E8F0;
+            color: var(--text-color);
+            transition: var(--transition);
+            padding: 6px 12px;
+        }
+        
+        .quick-date:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        /* Route dropdown */
         .route-select {
             width: 100%;
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: 1px solid #dee2e6;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid #E2E8F0;
             appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-position: right 1rem center;
             background-size: 1em;
             cursor: pointer;
+            height: 46px;
+            font-weight: 500;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            transition: var(--transition);
         }
         
         .route-select:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+            box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.15);
         }
         
-        /* Improved Trip Card Styles */
+        /* Trip Card Improved Styles */
         .trip-info {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 16px;
         }
         
         .trip-icon {
-            background-color: rgba(13, 110, 253, 0.1);
+            background-color: var(--primary-light);
             color: var(--primary-color);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 15px;
-            font-size: 1.2rem;
+            margin-right: 16px;
+            font-size: 1.5rem;
         }
         
         .trip-detail {
@@ -354,16 +443,32 @@
         .route-info {
             display: flex;
             align-items: center;
-            padding: 8px 0;
-            border-top: 1px dashed #eee;
-            border-bottom: 1px dashed #eee;
-            margin: 12px 0;
+            padding: 10px 0;
+            border-top: 1px solid rgba(0,0,0,0.04);
+            margin: 0;
+        }
+        
+        .route-info:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+        
+        .route-info:last-of-type {
+            padding-bottom: 0;
         }
         
         .route-icon {
             color: var(--primary-color);
-            margin-right: 10px;
+            margin-right: 12px;
             font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            flex-shrink: 0;
         }
         
         .route-text {
@@ -371,41 +476,85 @@
             color: var(--text-color);
         }
         
+        .card-divider {
+            height: 1px;
+            background-color: #EDF2F7;
+            margin: 16px 0;
+        }
+        
+        /* Added styles for better responsive design */
         @media (max-width: 767px) {
             .header-container {
                 padding: 20px;
-                margin-bottom: 20px;
+                margin-bottom: 24px;
             }
             
             .filter-section {
-                padding: 15px;
+                padding: 18px;
             }
             
             .filter-row > div {
-                margin-bottom: 15px;
+                margin-bottom: 18px;
             }
             
             h1 {
-                font-size: 1.6rem;
+                font-size: 1.8rem;
                 margin-bottom: 10px;
             }
             
             .back-btn {
                 font-size: 0.9rem;
-                padding: 6px 12px;
+                padding: 8px 14px;
+                margin-top: 10px;
             }
             
             .trip-number {
-                font-size: 1.1rem;
+                font-size: 1.3rem;
                 padding-right: 0;
             }
             
             .route-badge {
                 position: static;
                 display: inline-block;
-                margin-top: 8px;
+                margin-top: 10px;
+                margin-bottom: 5px;
+            }
+            
+            .trip-header {
+                padding: 16px 20px;
+            }
+            
+            .trip-body, .trip-footer {
+                padding: 16px 20px;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .section-title i {
+                font-size: 1.4rem;
             }
         }
+        
+        /* Animation for cards */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .trip-card {
+            animation: fadeIn 0.4s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        /* Staggered animation for multiple cards */
+        .trip-item:nth-child(1) .trip-card { animation-delay: 0.1s; }
+        .trip-item:nth-child(2) .trip-card { animation-delay: 0.15s; }
+        .trip-item:nth-child(3) .trip-card { animation-delay: 0.2s; }
+        .trip-item:nth-child(4) .trip-card { animation-delay: 0.25s; }
+        .trip-item:nth-child(5) .trip-card { animation-delay: 0.3s; }
+        .trip-item:nth-child(6) .trip-card { animation-delay: 0.35s; }
     </style>
 </head>
 <body>
@@ -416,14 +565,14 @@
                     <h1>Schedule {{ schedule_no }}</h1>
                     {% if schedule %}
                     <p class="schedule-details">
-                        {{ schedule.source }} to {{ schedule.destination }} 
+                        <i class="bi bi-pin-map-fill"></i> {{ schedule.source }} to {{ schedule.destination }} 
                         {% if schedule.via %} via {{ schedule.via }}{% endif %}
-                        </br>Route: {{ schedule.route_no }} | Trip KM:{{schedule.trip_km}} | {{ schedule.service_type }}
-
+                        <br/>
+                        <i class="bi bi-info-circle"></i> Route: {{ schedule.route_no }} | Trip KM: {{schedule.trip_km}} | {{ schedule.service_type }}
                     </p>
                     {% endif %}
                 </div>
-                <div class="col-md-4 text-end">
+                <div class="col-md-4 text-md-end text-center mt-3 mt-md-0">
                     <a href="{% url 'schedule_list_view' %}" class="back-btn">
                         <i class="bi bi-arrow-left"></i> Back to Schedules
                     </a>
@@ -434,7 +583,7 @@
         <!-- Filter Section -->
         <div class="filter-section">
             <div class="row filter-row">
-                <!-- New Date Filter -->
+                <!-- Date Filter -->
                 <div class="col-md-4 mb-3 mb-md-0">
                     <div class="filter-title">
                         <i class="bi bi-calendar3"></i> Select Date
@@ -443,7 +592,7 @@
                         <div class="date-picker-wrapper">
                             <input type="text" id="datePicker" name="date" class="form-control" value="{{ selected_date }}" placeholder="Select date">
                         </div>
-                        <div class="date-quick-filter d-flex gap-2">
+                        <div class="date-quick-filter">
                             <button type="button" class="btn btn-sm btn-outline-primary quick-date" data-days="0">Today</button>
                             <button type="button" class="btn btn-sm btn-outline-primary quick-date" data-days="-1">Yesterday</button>
                             <button type="button" class="btn btn-sm btn-outline-primary quick-date" data-days="-7">Last Week</button>
@@ -455,7 +604,6 @@
                     <div class="filter-title">
                         <i class="bi bi-funnel"></i> Filter by Route
                     </div>
-                    <!-- Replace buttons with dropdown -->
                     <select id="routeSelect" class="route-select form-select">
                         <option value="all">All Routes</option>
                         {% for route in routes %}
@@ -484,53 +632,54 @@
         
         {% if trips %}
             <div class="row" id="tripsContainer">
-            {% for trip, s in trips %}
+            {% for s in trips %}
                 <div class="col-md-6 col-lg-4 trip-item" data-route="{{ trip.schedule_no.route_no }}" data-trip-no="{{ trip.trip_no }}">
                     <div class="trip-card">
                         <div class="trip-header">
-                            <span class="route-badge">{{ s.route_no }}</span>
+                            <span class="route-badge">Route {{ s.route_no }}</span>
                             <div class="trip-info">
                                 <div class="trip-icon">
                                     <i class="bi bi-bus-front"></i>
                                 </div>
                                 <div class="trip-detail">
-                                    <h3 class="trip-number">Trip {{ trip.trip_no }}</h3>
+                                    <h3 class="trip-number">Trip {{ s.trip_no }}</h3>
                                     <p class="date-info">
-                                        <i class="bi bi-calendar-date"></i> {{ trip.date }}
+                                        <i class="bi bi-calendar-date"></i> {{ s.date }}
                                     </p>
                                 </div>
                             </div>
-                            <div class="route-info">
-                                <i class="bi bi-arrow-right-circle route-icon"></i>
-                                <span class="route-text">Route Number: {{ s.route_no }}</span>
-                            </div>
-                            <div class="route-info">
-                                <i class="bi bi-arrow-right-circle route-icon"></i>
-                                <span class="route-text">Source Stop: {{ s.source }}</span>
-                            </div>
-                            <div class="route-info">
-                                <i class="bi bi-arrow-right-circle route-icon"></i>
-                                <span class="route-text">Via: {{ s.via }}</span>
-                            </div>
-                            <div class="route-info">
-                                <i class="bi bi-arrow-right-circle route-icon"></i>
-                                <span class="route-text">Final Stop: {{ s.destination }}</span>
-                            </div>
-                            <div class="route-info">
-                                <i class="bi bi-arrow-right-circle route-icon"></i>
-                                <span class="route-text">Start Time: {{ s.start_time }}</span>
-                            </div>
-                            <div class="route-info">
-                                <i class="bi bi-arrow-right-circle route-icon"></i>
-                                <span class="route-text">End Time: {{ s.end_time }}</span>
-                            </div>
-                            <div class="route-info">
-                                <i class="bi bi-arrow-right-circle route-icon"></i>
-                                <span class="route-text">Trip Km:{{ s.trip_km }}</span>
-                            </div>
-                            
                         </div>
                         <div class="trip-body">
+                            <div class="route-info">
+                                <span class="route-icon"><i class="bi bi-geo-alt"></i></span>
+                                <span class="route-text">Source: <strong>{{ s.source }}</strong></span>
+                            </div>
+                            <div class="route-info">
+                                <span class="route-icon"><i class="bi bi-signpost-split"></i></span>
+                                <span class="route-text">Via: <strong>{{ s.via }}</strong></span>
+                            </div>
+                            <div class="route-info">
+                                <span class="route-icon"><i class="bi bi-geo-alt-fill"></i></span>
+                                <span class="route-text">Destination: <strong>{{ s.destination }}</strong></span>
+                            </div>
+                            
+                            
+                            <div class="route-info">
+                                <span class="route-icon"><i class="bi bi-clock"></i></span>
+                                <span class="route-text">Start Time: <strong>{{ s.start_time }}</strong></span>
+                            </div>
+                            <div class="route-info">
+                                <span class="route-icon"><i class="bi bi-clock-fill"></i></span>
+                                <span class="route-text">End Time: <strong>{{ s.end_time }}</strong></span>
+                            </div>
+                            <div class="route-info">
+                                <span class="route-icon"><i class="bi bi-pin-map"></i></span>
+                                <span class="route-text">Trip Distance: <strong>{{ s.trip_km }} km</strong></span>
+                            </div>
+                            
+                            {% if trip.revenue is not None or trip.distance_km is not None or trip.epkm is not None %}
+                            <div class="card-divider"></div>
+                            
                             <div class="metrics">
                                 {% if trip.revenue is not None %}
                                     <div class="metric">
@@ -541,8 +690,8 @@
                                 
                                 {% if trip.distance_km is not None %}
                                     <div class="metric">
-                                        <div class="metric-value">{{ trip.distance_km|floatformat:1 }} km</div>
-                                        <div class="metric-label">Distance</div>
+                                        <div class="metric-value">{{ trip.distance_km|floatformat:1 }}</div>
+                                        <div class="metric-label">Distance (km)</div>
                                     </div>
                                 {% endif %}
                                 
@@ -553,9 +702,10 @@
                                     </div>
                                 {% endif %}
                             </div>
+                            {% endif %}
                         </div>
-                        <div class="trip-footer text-center">
-                            <a href="{% url 'trip_map_view' schedule_no=schedule_no trip_no=trip.trip_no route_no=s.route_no  %}" class="btn btn-primary view-btn w-100">
+                        <div class="trip-footer">
+                            <a href="{% url 'trip_map_view' schedule_no=s.schedule_no trip_no=s.trip_no route_no=s.route_no %}" class="btn btn-primary view-btn w-100">
                                 <i class="bi bi-map"></i> View Trip Map
                             </a>
                         </div>
@@ -565,7 +715,7 @@
             </div>
         {% else %}
             <div class="empty-state">
-                <i class="bi bi-calendar-x empty-icon" style="font-size: 3rem; color: #6c757d; margin-bottom: 20px;"></i>
+                <i class="bi bi-calendar-x empty-icon"></i>
                 <h3>No Trips Found</h3>
                 <p class="text-muted">There are no trips available for this schedule on {{ selected_date|date:"F d, Y" }}.</p>
                 <a href="{% url 'schedule_submit' %}" class="btn btn-primary mt-3">
@@ -634,7 +784,7 @@
             
             tripItems.forEach(item => {
                 const routeBadge = item.querySelector('.route-badge');
-                const routeValue = routeBadge ? routeBadge.textContent.trim() : '';
+                const routeValue = routeBadge ? routeBadge.textContent.trim().replace('Route ', '') : '';
                 const tripNumberEl = item.querySelector('.trip-number');
                 const tripNumber = tripNumberEl ? tripNumberEl.textContent.toLowerCase() : '';
                 

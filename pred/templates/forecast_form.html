@@ -5,76 +5,170 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demand Forecast Form</title>
     <style>
+        :root {
+            --primary: #1976d2;
+            --primary-dark: #0d47a1;
+            --primary-light: #bbdefb;
+            --accent: #03a9f4;
+            --text-on-dark: #ffffff;
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --background: #f5f7fa;
+            --card-bg: #ffffff;
+            --border-radius: 8px;
+            --shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s ease;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: var(--background);
             margin: 0;
             padding: 0;
+            color: var(--text-primary);
         }
 
         header {
-            background-color: #d32f2f;
-            color: white;
-            padding: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--text-on-dark);
+            padding: 25px;
             text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             margin: 0;
-            font-size: 2em;
+            font-size: 2.2em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         .container {
-            width: 80%;
-            max-width: 600px;
-            margin: 30px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 85%;
+            max-width: 650px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
         }
 
         label {
             font-size: 1.1em;
-            margin-top: 10px;
+            margin-top: 15px;
             display: block;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        input[type="text"], 
+        input[type="date"],
+        .select2-container--default .select2-selection--single {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 25px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            font-size: 1em;
+            transition: var(--transition);
+            box-sizing: border-box;
+        }
+        input[type="text"],.select2-container--default .select2-selection--single{
+            padding-bottom:45px;
         }
 
-        input[type="text"], input[type="date"] {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1em;
+        input[type="text"]:focus, 
+        input[type="date"]:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2);
         }
 
         button {
-            background-color: #d32f2f;
-            color: white;
-            padding: 12px 20px;
+            background-color: var(--primary);
+            color: var(--text-on-dark);
+            padding: 14px 20px;
             border: none;
-            border-radius: 5px;
-            font-size: 1.1em;
+            border-radius: var(--border-radius);
+            font-size: 1.2em;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: var(--transition);
             width: 100%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         button:hover {
-            background-color: #c62828;
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         .footer {
             text-align: center;
-            font-size: 0.9em;
-            color: #777;
-            margin-top: 20px;
+            font-size: 1em;
+            color: var(--text-secondary);
+            margin-top: 30px;
+            padding-bottom: 20px;
         }
 
         .footer a {
-            color: #d32f2f;
+            color: var(--primary);
             text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .footer a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        /* Custom Select2 styling */
+        .select2-container--default .select2-selection--single {
+            height: auto;
+            line-height: 1.5;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: var(--text-primary);
+            line-height: 2;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 44px;
+        }
+
+        .select2-dropdown {
+            border-color: #e0e0e0;
+            box-shadow: var(--shadow);
+        }
+
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: var(--primary);
+        }
+
+        .select2-container--default .select2-search--dropdown .select2-search__field {
+            border: 1px solid #e0e0e0;
+            padding: 8px;
+        }
+
+        .select2-container--default .select2-search--dropdown .select2-search__field:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        /* Form group spacing */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        /* Card animation */
+        .container {
+            transition: transform 0.3s ease;
+        }
+        
+        .container:hover {
+            transform: translateY(-5px);
         }
     </style>
     <!-- Include Select2 CSS -->
@@ -90,36 +184,34 @@
 <body>
 
     <header>
-        <h1>Demand Forecast Form</h1>
+        <h1>Demand Forecast Tool</h1>
     </header>
 
     <div class="container">
         <form method="POST" action="{% url 'demand_forecast' %}">
             {% csrf_token %}
-            <!-- <label for="from_stop_name">From Stop Name:</label> -->
-            <!-- <select id="from_stop_name" name="to_stop_name" required>
-                <option value="" disabled selected>Select a Stop</option>
-                {% for stop in stops %}
-                    <option value="{{ stop }}">{{ stop }}</option>
-                {% endfor %}
-            </select> -->
-
-            <label for="to_stop_name">To Stop Name:</label>
-            <select id="to_stop_name" name="to_stop_name" required>
-                <option value="" disabled selected>Select a Stop</option>
-                {% for stop in stops %}
-                    <option value="{{ stop }}">{{ stop }}</option>
-                {% endfor %}
-            </select>
-            <br>
-            <label for="date">Date (YYYY-MM-DD):</label>
-            <input type="date" id="date" name="date" min="2024-06-01" max="2024-10-31" required>
-            <button type="submit">Predict Demand</button>
+            
+            <div class="form-group">
+                <label for="to_stop_name">Destination Stop:</label>
+                <select id="to_stop_name" name="to_stop_name" required>
+                    <option value="" disabled selected>Select a destination</option>
+                    {% for stop in stops %}
+                        <option value="{{ stop }}">{{ stop }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="date">Travel Date:</label>
+                <input type="date" id="date" name="date" min="2024-06-01" max="2024-10-31" required>
+            </div>
+            
+            <button type="submit">Generate Forecast</button>
         </form>
     </div>
 
     <div class="footer">
-        <p>Need help? <a href="mailto:support@example.com">Contact Support</a></p>
+        <p>Need assistance? <a href="mailto:support@example.com">Contact our support team</a></p>
     </div>
 
 </body>
@@ -127,9 +219,16 @@
     // Initialize Select2 on the dropdown
     $(document).ready(function() {
         $('#to_stop_name').select2({
-            placeholder: "Select a Stop", // Placeholder text when nothing is selected
-            allowClear: true,             // Allow clearing the selection
-            width: '100%'                 // Make the dropdown fit its container
+            placeholder: "Search for a destination", 
+            allowClear: true,
+            width: '100%'
+        });
+        
+        // Add animation effect when form is focused
+        $('input, select').focus(function() {
+            $(this).closest('.container').addClass('active');
+        }).blur(function() {
+            $(this).closest('.container').removeClass('active');
         });
     });
 </script>
