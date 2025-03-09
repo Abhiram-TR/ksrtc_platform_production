@@ -120,7 +120,7 @@
         <div class="trip-header">
             <div class="header-info">
                 <h1>Schedule {{ schedule.schedule_no }} - Trip {{ schedule.trip_no }}</h1>
-                <p class="subtitle">{{ schedule.source }} to {{ schedule.destination }} | {{ schedule.route_no }}</p>
+                <p class="subtitle">{{ schedule.source }} to {{ schedule.destination }} | {{ route_no }}</p>
             </div>
             <a href="{% url 'trip_list_view' schedule.schedule_no %}" class="btn btn-sm btn-outline-light back-btn">
                 <i class="bi bi-arrow-left"></i> Back

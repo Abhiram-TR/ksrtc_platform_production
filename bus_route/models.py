@@ -28,7 +28,7 @@ class Schedule(models.Model):
       service_type = models.CharField(max_length=50)
       start_time = models.TimeField()
       end_time = models.TimeField()
-
+      trip_km = models.FloatField(null=True, blank=True)
       class Meta:
             unique_together = (('schedule_no', 'trip_no'),)
       def save(self, *args, **kwargs):
@@ -42,7 +42,7 @@ class Trip(models.Model):
       schedule_no = models.CharField(max_length=20)
       trip_no = models.IntegerField()
       revenue = models.FloatField(null=True, blank=True)
-      distance_km = models.FloatField(null=True, blank=True)
+      
 
       class Meta:
             unique_together = (('date', 'schedule_no', 'trip_no'),)
@@ -53,8 +53,14 @@ class Trip(models.Model):
             Calculates EPKM as revenue divided by distance_km.
             Returns None if revenue or distance_km is missing or if distance_km is zero.
             """
-            if self.revenue is not None and self.distance_km not in (None, 0):
-                  return self.revenue / self.distance_km
+            try:
+                    schedule = Schedule.objects.get(schedule_no=self.schedule_no, trip_no=self.trip_no)
+                    distance_km = schedule.trip_km
+            except Schedule.DoesNotExist:
+                    distance_km = None
+
+            if self.revenue is not None and distance_km not in (None, 0):
+                    return self.revenue / distance_km
             return None
 
       def __str__(self):

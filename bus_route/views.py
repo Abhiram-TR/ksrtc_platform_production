@@ -14,7 +14,8 @@ import polyline  # Required for decoding Google Maps encoded polylines
 import pandas as pd
 from datetime import datetime
 from .models import Schedule, Route, Trip
-
+from datetime import datetime
+from django.shortcuts import render, get_object_or_404
 # Load environment variables
 env = dotenv.load_dotenv()
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
@@ -519,38 +520,57 @@ def schedule_list_view(request):
     
     return render(request, 'bus_route/schedule_list.html', context)
 
-def trip_list_view(request, schedule_no,date='2024-08-05'):
-    """View to display trips for a specific schedule"""
+def trip_list_view(request, schedule_no):
+    """View to display trips for a specific schedule with date filtering"""
     # Ensure schedule_no is uppercase
     schedule_no = schedule_no.upper()
-    print(schedule_no)
-    # Get all trips for this schedule_no
-    trips = Trip.objects.filter(schedule_no=schedule_no, date=date).order_by('-date', 'trip_no')
-    print(trips)
-    # Group trips by trip_no
+
+    # Retrieve one schedule record for additional details (if needed)
+    schedule = Schedule.objects.filter(schedule_no=schedule_no).first()
+
+    # Get date from query parameters, default to today if not provided
+    selected_date = request.GET.get('date', '2024-08-15')
+
+    # Get all trips for this schedule_no and selected date
+    trips = Trip.objects.filter(schedule_no=schedule_no, date=selected_date).order_by('-date', 'trip_no')
+
+    # Group trips by trip_no and get the most recent trip for each trip_no
     trip_groups = {}
     for trip in trips:
         if trip.trip_no not in trip_groups:
             trip_groups[trip.trip_no] = []
+        try:
+            s = Schedule.objects.get(schedule_no=schedule_no, trip_no=trip.trip_no)
+        except Schedule.DoesNotExist:
+            route_no = -1
         trip_groups[trip.trip_no].append(trip)
-    
-    # For each trip_no, get the most recent trip
+        trip_groups[trip.trip_no].append(s)
+
+
+        # print(trip_groups)
+
     latest_trips = []
     for trip_no, trip_list in trip_groups.items():
-        # Trips are already ordered by -date, so the first one is the latest
-        latest_trips.append(trip_list[0])
-    
-    # Sort by trip_no
-    latest_trips.sort(key=lambda x: x.trip_no)
-    
+        latest_trips.append((trip_list[0], trip_list[1]))
+    latest_trips.sort(key=lambda x: x[0].trip_no)
+    # Get a list of unique dates that have trips for this schedule
+    all_dates = Trip.objects.filter(schedule_no=schedule_no).values_list('date', flat=True).distinct().order_by('-date')
+
+    routes = Schedule.objects.filter(schedule_no=schedule_no).values_list('route_no',flat=True).distinct().order_by('route_no')
+
+    # print(latest_trips)
     context = {
-        'schedule': schedule_no,
-        'trips': latest_trips
+        'schedule': schedule,
+        'schedule_no': schedule_no,
+        'trips': latest_trips,
+        'selected_date': selected_date,
+        'all_dates': all_dates,
+        'routes': routes
     }
-    
+
     return render(request, 'bus_route/trip_list.html', context)
 
-def trip_map_view(request, schedule_no, trip_no):
+def trip_map_view(request, schedule_no, trip_no,route_no):
     """View to display the map for a specific trip"""
     # Ensure schedule_no is uppercase
     schedule_no = schedule_no.upper()
@@ -560,10 +580,10 @@ def trip_map_view(request, schedule_no, trip_no):
         schedule = Schedule.objects.get(schedule_no=schedule_no, trip_no=trip_no)
         
         # Get trip data if available
-        trip = Trip.objects.filter(schedule_no=schedule, trip_no=trip_no).order_by('-date').first()
+        trip = Trip.objects.filter(schedule_no=schedule_no, trip_no=trip_no).order_by('-date').first()
         
         # Get route stops
-        routes = Route.objects.filter(route_no=schedule.route_no.upper()).order_by('order_sequence')
+        routes = Route.objects.filter(route_no=route_no).order_by('order_sequence')
         
         if not routes:
             messages.error(request, 'No route stops found for this schedule.')
@@ -585,11 +605,11 @@ def trip_map_view(request, schedule_no, trip_no):
         if not map_html:
             messages.error(request, 'Not enough bus stops to create a route.')
             return redirect('trip_list_view', schedule_no=schedule_no)
-        
         context = {
             'map_html': map_html,
             'schedule': schedule,
-            'trip': trip
+            'trip': trip,
+            'route_no':route_no
         }
         
         return render(request, 'bus_route/trip_map.html', context)

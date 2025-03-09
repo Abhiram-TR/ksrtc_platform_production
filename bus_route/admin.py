@@ -16,7 +16,7 @@ class RouteAdmin(admin.ModelAdmin):
 # Custom admin for Schedule model
 class ScheduleAdmin(admin.ModelAdmin):
     # Display the fields in the list view of the admin interface
-    list_display = ('schedule_no', 'trip_no', 'route_no', 'source', 'destination', 'service_type', 'start_time', 'end_time')
+    list_display = ('schedule_no', 'trip_no', 'route_no', 'source', 'destination', 'service_type', 'start_time', 'end_time', 'trip_km')
     # Add search functionality to search by schedule_no, route_no, source, and destination
     search_fields = ('schedule_no', 'route_no', 'source', 'destination')
     # Add filters for service_type, start_time, and end_time
@@ -28,9 +28,9 @@ class ScheduleAdmin(admin.ModelAdmin):
 # Custom admin for Trip model
 class TripAdmin(admin.ModelAdmin):
     # Display the fields in the list view of the admin interface, including the epkm property
-    list_display = ('date', 'schedule_no', 'trip_no', 'revenue', 'distance_km', 'epkm')
+    list_display = ('date', 'schedule_no', 'trip_no', 'revenue', 'epkm')
     # Add search functionality to search by schedule_no, trip_no, and date
-    search_fields = ('schedule_no__schedule_no', 'trip_no', 'date')
+    search_fields = ('schedule_no', 'trip_no', 'date')
     # Add filters for date and schedule_no
     list_filter = ('date', 'schedule_no')
     # Order the records by date, schedule_no, and trip_no
