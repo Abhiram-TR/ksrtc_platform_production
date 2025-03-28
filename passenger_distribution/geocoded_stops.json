@@ -4098,5 +4098,57 @@
     "Oonnanpara": {
         "latitude": 8.5505077,
         "longitude": 76.998783
+    },
+    "Vaikom": {
+        "latitude": 9.7497841,
+        "longitude": 76.3926003
+    },
+    "Mulluvila": {
+        "latitude": 8.878778114455354,
+        "longitude": 76.62723144792679
+    },
+    "Mulayilkonam": {
+        "latitude": 8.7257991,
+        "longitude": 76.93829737453167
+    },
+    "Perunadu": {
+        "latitude": 9.367741,
+        "longitude": 76.85341
+    },
+    "Kaliyakkavilai": {
+        "latitude": 8.3596635,
+        "longitude": 77.0285588
+    },
+    "Edathua": {
+        "latitude": 9.3661184,
+        "longitude": 76.4772034
+    },
+    "Chenkalloor": {
+        "latitude": 8.4943315,
+        "longitude": 76.97974935624082
+    },
+    "Paripalli": {
+        "latitude": 8.812392467691414,
+        "longitude": 76.68299001630481
+    },
+    "Chakkulathukavu": {
+        "latitude": 9.366979149999999,
+        "longitude": 76.51428932434465
+    },
+    "Aruvippuram Temple": {
+        "latitude": 8.5142786,
+        "longitude": 77.018956
+    },
+    "Cheppilod": {
+        "latitude": 8.7122621,
+        "longitude": 76.98490206182984
+    },
+    "Ootty": {
+        "latitude": 9.5902829,
+        "longitude": 76.5216995
+    },
+    "Kuryathi": {
+        "latitude": 8.6115604,
+        "longitude": 77.0529267
     }
 }

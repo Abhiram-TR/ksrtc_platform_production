@@ -12,4 +12,7 @@ urlpatterns = [
     path('analyzer/', views.enhanced_schedule_analyzer_view, name='enhanced_schedule_analyzer'),
     path('submit/', views.schedule_submit_view, name='schedule_submit'),
     path('api/route-details/', views.get_route_details, name='get_route_details'),
+    path('revenue-analysis/', views.revenue_analysis, name='revenue_analysis'),
+    path('trip-revenue-analysis/', views.trip_revenue_analysis, name='trip_revenue_analysis'),
+
 ]

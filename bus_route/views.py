@@ -845,3 +845,207 @@ def enhanced_schedule_analyzer_view(request):
     
     # For GET requests, render the form
     return render(request, 'bus_route/enhanced_schedule_form.html')
+# Add this function to your views.py file
+
+
+
+# Add this to your views.py file
+
+
+
+# In bus_route/views.py
+
+from django.http import JsonResponse
+from datetime import datetime
+from .models import Trip, Schedule
+from django.db.models import Sum
+
+# In bus_route/views.py
+
+from django.http import JsonResponse
+from datetime import datetime, timedelta
+from .models import Trip
+from django.db.models import Sum
+
+def revenue_analysis(request):
+    """
+    API endpoint to fetch revenue data for selected schedules within a date range
+    """
+    if request.method != 'GET':
+        return JsonResponse({'error': 'Only GET method is allowed'}, status=405)
+    
+    # Get query parameters
+    schedule_no = request.GET.get('schedule_no', '')
+    start_date = request.GET.get('start_date', '')
+    end_date = request.GET.get('end_date', '')
+    
+    # Validate parameters
+    if not start_date or not end_date:
+        return JsonResponse({'error': 'Date range is required'}, status=400)
+    
+    try:
+        start_date_obj = datetime.strptime(start_date, '%Y-%m-%d').date()
+        end_date_obj = datetime.strptime(end_date, '%Y-%m-%d').date()
+    except ValueError:
+        return JsonResponse({'error': 'Invalid date format. Use YYYY-MM-DD'}, status=400)
+    
+    # Build date list for the entire range
+    date_list = []
+    current_date = start_date_obj
+    while current_date <= end_date_obj:
+        date_list.append(current_date.strftime('%Y-%m-%d'))
+        current_date += timedelta(days=1)
+    
+    result_data = []
+    
+    # Handle 'all' schedules case
+    if schedule_no.lower() == 'all':
+        # Get all schedules that have trips in the date range
+        schedules_with_trips = Trip.objects.filter(
+            date__gte=start_date_obj,
+            date__lte=end_date_obj
+        ).values_list('schedule_no', flat=True).distinct()
+        
+        # Process each schedule
+        for schedule in schedules_with_trips:
+            schedule_data = process_schedule_revenue(schedule, start_date_obj, end_date_obj, date_list)
+            if schedule_data:
+                result_data.append(schedule_data)
+    else:
+        # Process single schedule
+        schedule_data = process_schedule_revenue(schedule_no, start_date_obj, end_date_obj, date_list)
+        if schedule_data:
+            result_data.append(schedule_data)
+    
+    return JsonResponse({'data': result_data})
+
+def process_schedule_revenue(schedule_no, start_date, end_date, date_list):
+    """Helper function to process revenue data for a specific schedule"""
+    # Query for daily revenue for this schedule
+    daily_revenues = Trip.objects.filter(
+        schedule_no=schedule_no,
+        date__gte=start_date,
+        date__lte=end_date
+    ).values('date').annotate(total_revenue=Sum('revenue'))
+    
+    # If no data, return None
+    if not daily_revenues.exists():
+        return None
+    
+    # Create a lookup dictionary for quick access
+    revenue_lookup = {
+        revenue_data['date'].strftime('%Y-%m-%d'): revenue_data['total_revenue'] 
+        for revenue_data in daily_revenues
+    }
+    
+    # Build the revenue list for all dates in the range
+    revenue_list = []
+    for date_str in date_list:
+        # Use the revenue if available, otherwise null (not 0, to create gaps in the chart)
+        revenue_list.append(float(revenue_lookup.get(date_str, 0)) if date_str in revenue_lookup else None)
+    
+    return {
+        'schedule': schedule_no,
+        'dates': date_list,
+        'revenues': revenue_list
+    }
+
+# Add this function to your views.py file
+
+from django.http import JsonResponse
+from datetime import datetime, timedelta
+from .models import Trip
+from django.db.models import Sum
+
+def trip_revenue_analysis(request):
+    """
+    API endpoint to fetch revenue data for selected trips within a date range
+    """
+    if request.method != 'GET':
+        return JsonResponse({'error': 'Only GET method is allowed'}, status=405)
+    
+    # Get query parameters
+    schedule_no = request.GET.get('schedule_no', '')
+    trip_no = request.GET.get('trip_no', '')
+    start_date = request.GET.get('start_date', '')
+    end_date = request.GET.get('end_date', '')
+    
+    # Validate parameters
+    if not schedule_no:
+        return JsonResponse({'error': 'Schedule number is required'}, status=400)
+    
+    if not start_date or not end_date:
+        return JsonResponse({'error': 'Date range is required'}, status=400)
+    
+    try:
+        start_date_obj = datetime.strptime(start_date, '%Y-%m-%d').date()
+        end_date_obj = datetime.strptime(end_date, '%Y-%m-%d').date()
+    except ValueError:
+        return JsonResponse({'error': 'Invalid date format. Use YYYY-MM-DD'}, status=400)
+    
+    # Build date list for the entire range
+    date_list = []
+    current_date = start_date_obj
+    while current_date <= end_date_obj:
+        date_list.append(current_date.strftime('%Y-%m-%d'))
+        current_date += timedelta(days=1)
+    
+    result_data = []
+    
+    # Handle 'all' trips case
+    if trip_no.lower() == 'all':
+        # Get all trips for this schedule in the database
+        trips_with_revenue = Trip.objects.filter(
+            schedule_no=schedule_no,
+            date__gte=start_date_obj,
+            date__lte=end_date_obj
+        ).values_list('trip_no', flat=True).distinct()
+        
+        # Process each trip
+        for trip in trips_with_revenue:
+            trip_data = process_trip_revenue(schedule_no, trip, start_date_obj, end_date_obj, date_list)
+            if trip_data:
+                result_data.append(trip_data)
+    else:
+        # Process single trip
+        try:
+            trip_no_int = int(trip_no)
+            trip_data = process_trip_revenue(schedule_no, trip_no_int, start_date_obj, end_date_obj, date_list)
+            if trip_data:
+                result_data.append(trip_data)
+        except ValueError:
+            return JsonResponse({'error': 'Invalid trip number'}, status=400)
+    
+    return JsonResponse({'data': result_data})
+
+def process_trip_revenue(schedule_no, trip_no, start_date, end_date, date_list):
+    """Helper function to process revenue data for a specific trip"""
+    # Query for daily revenue for this trip
+    trip_revenues = Trip.objects.filter(
+        schedule_no=schedule_no,
+        trip_no=trip_no,
+        date__gte=start_date,
+        date__lte=end_date
+    ).values('date', 'revenue')
+    
+    # If no data, return None
+    if not trip_revenues.exists():
+        return None
+    
+    # Create a lookup dictionary for quick access
+    revenue_lookup = {
+        rev_data['date'].strftime('%Y-%m-%d'): rev_data['revenue']
+        for rev_data in trip_revenues
+    }
+    
+    # Build the revenue list for all dates in the range
+    revenue_list = []
+    for date_str in date_list:
+        # Use the revenue if available, otherwise null (not 0, to create gaps in the chart)
+        revenue_list.append(float(revenue_lookup.get(date_str, 0)) if date_str in revenue_lookup else None)
+    
+    return {
+        'trip': trip_no,
+        'dates': date_list,
+        'revenues': revenue_list
+    }
