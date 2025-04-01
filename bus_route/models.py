@@ -26,8 +26,8 @@ class Schedule(models.Model):
       
       # New fields for service details.
       service_type = models.CharField(max_length=50)
-      start_time = models.TimeField()
-      end_time = models.TimeField()
+      start_time = models.TimeField(null=True, blank=True)
+      end_time = models.TimeField(null=True, blank=True)
       trip_km = models.FloatField(null=True, blank=True)
       class Meta:
             unique_together = (('schedule_no', 'trip_no'),)
