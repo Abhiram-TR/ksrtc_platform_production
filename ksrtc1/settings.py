@@ -36,6 +36,9 @@ CSRF_TRUSTED_ORIGINS = [
     "ksrtc1-945909242090.us-central1.run.app",  
 
 ]
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 # Application definition
 
