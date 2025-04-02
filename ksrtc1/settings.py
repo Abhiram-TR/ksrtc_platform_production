@@ -25,8 +25,15 @@ SECRET_KEY = 'django-insecure-5#9^o@6_i37tvp$0zu#p6db@rt1^k@g4xg6@+d7r%o+8z2v#@k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "ksrtc1-294298529874.us-central1.run.app",  
+    "127.0.0.1",  # Keep localhost for local testing
+    "https://*.run.app"
+]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.run.app"
+]
 
 # Application definition
 
@@ -47,6 +54,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # Add this here
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -54,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 ROOT_URLCONF = 'ksrtc1.urls'
 
@@ -121,8 +130,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+import os
+
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# This is needed for collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# This is for serving static files during development
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 

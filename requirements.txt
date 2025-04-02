@@ -26,3 +26,4 @@ google-cloud-bigquery
 googlemaps
 polyline
 openpyxl
+whitenoise
