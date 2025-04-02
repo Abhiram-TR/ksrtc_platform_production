@@ -32,8 +32,8 @@ ALLOWED_HOSTS = [
 ]
 # "*.run.app",
 CSRF_TRUSTED_ORIGINS = [
-    "ksrtc1-294298529874.us-central1.run.app",
-    "ksrtc1-945909242090.us-central1.run.app",  
+    "https://ksrtc1-294298529874.us-central1.run.app",
+    "https://ksrtc1-945909242090.us-central1.run.app",  
 
 ]
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
