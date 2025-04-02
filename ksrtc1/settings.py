@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://*.run.app"
+    "https://ksrtc1-294298529874.us-central1.run.app"
 ]
 
 # Application definition
