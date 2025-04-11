@@ -26,15 +26,15 @@ SECRET_KEY = 'django-insecure-5#9^o@6_i37tvp$0zu#p6db@rt1^k@g4xg6@+d7r%o+8z2v#@k
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "ksrtc1-294298529874.us-central1.run.app",
-    "127.0.0.1",  # Keep localhost for local testing
+    "ksrtc1-950699769743.us-central1.run.app",
+    "127.0.0.1",
+    "127.0.0.1:8000"  # Keep localhost for local testing
     "ksrtc1-945909242090.us-central1.run.app"
 ]
 # "*.run.app",
 CSRF_TRUSTED_ORIGINS = [
-    "https://ksrtc1-294298529874.us-central1.run.app",
+    "https://ksrtc1-950699769743.us-central1.run.app",
     "https://ksrtc1-945909242090.us-central1.run.app",
-
 ]
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CSRF_COOKIE_SECURE = True
