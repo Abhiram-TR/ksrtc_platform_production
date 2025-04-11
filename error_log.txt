@@ -49,30 +49,6 @@ Traceback (most recent call last):
     order_sequence = int(row.iloc[0])  # Expected Column A
 ValueError: invalid literal for int() with base 10: 'Order Sequence'
 
-Skipping row 37 in 3.xlsx (1679AW) due to error: cannot convert float NaN to integer
-Traceback (most recent call last):
-  File "/home/jeev/minister/ksrtc_platform_production/conv_route.py", line 56, in excel_to_json_folder
-    order_sequence = int(row.iloc[0])  # Expected Column A
-ValueError: cannot convert float NaN to integer
-
-Skipping row 38 in 3.xlsx (1679AW) due to error: cannot convert float NaN to integer
-Traceback (most recent call last):
-  File "/home/jeev/minister/ksrtc_platform_production/conv_route.py", line 56, in excel_to_json_folder
-    order_sequence = int(row.iloc[0])  # Expected Column A
-ValueError: cannot convert float NaN to integer
-
-Skipping row 39 in 3.xlsx (1679AW) due to error: cannot convert float NaN to integer
-Traceback (most recent call last):
-  File "/home/jeev/minister/ksrtc_platform_production/conv_route.py", line 56, in excel_to_json_folder
-    order_sequence = int(row.iloc[0])  # Expected Column A
-ValueError: cannot convert float NaN to integer
-
-Skipping row 40 in 3.xlsx (1679AW) due to error: cannot convert float NaN to integer
-Traceback (most recent call last):
-  File "/home/jeev/minister/ksrtc_platform_production/conv_route.py", line 56, in excel_to_json_folder
-    order_sequence = int(row.iloc[0])  # Expected Column A
-ValueError: cannot convert float NaN to integer
-
 Skipping row 0 in 3.xlsx (1269) due to error: invalid literal for int() with base 10: 'Order Sequence'
 Traceback (most recent call last):
   File "/home/jeev/minister/ksrtc_platform_production/conv_route.py", line 56, in excel_to_json_folder
