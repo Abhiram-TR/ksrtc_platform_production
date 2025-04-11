@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "ksrtc1-950699769743.us-central1.run.app",
     "127.0.0.1",
-    "127.0.0.1:8000"  # Keep localhost for local testing
+    "127.0.0.1:8000",  # Keep localhost for local testing
     "ksrtc1-945909242090.us-central1.run.app"
 ]
 # "*.run.app",
